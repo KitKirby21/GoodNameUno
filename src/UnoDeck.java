@@ -18,7 +18,7 @@ public class UnoDeck {
 
 	public UnoDeck (int num, UnoDeck deck) {
 		for (int  i = 0; i<num; i++) {
-			this.pull(deck);
+			this.add(deck.pop());
 		}
 	}
 	public void add (UnoCard card) {
@@ -27,8 +27,11 @@ public class UnoDeck {
 	public void remove (UnoCard card) {
 		cards.remove(card);
 	}
-	public void pull(UnoDeck deck) {
-		
-		this.cards.add(deck.cards.remove(deck.cards.size()-1));
+	public UnoCard pop() {
+		return this.cards.remove(this.cards.size()-1);
+	}
+	
+	public UnoCard peek() {
+		return cards.get(this.cards.size()-1);
 	}
 }

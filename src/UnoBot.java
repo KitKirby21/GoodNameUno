@@ -1,24 +1,39 @@
 
 public class UnoBot implements UnoPlayer {
-	public UnoCard pickCard(UnoDeck gD, UnoCard cardFU, UnoDeck deck) {
-		for (int i = 0; i<deck.cards.size()-1; i++) {
-			UnoCard card = deck.cards.get(i);
-			if(card.color().equals(cardFU.color())
-					|| card.number() == cardFU.number()
-					|| card.number()==13||card.number()==14) {
+	
+	private UnoDeck hand;
+	
+	public UnoBot(UnoDeck hand) {
+		this.hand = hand;
+	}
+	
+	public UnoCard pickCard(UnoDeck gD, UnoDeck cardsFU) {
+		for (int i = 0; i<this.hand.cards.size(); i++) {
+			UnoCard card = this.hand.cards.get(i);
+			if(card.canPlace(cardsFU.peek())) {
 				return card;
 			}
 		}
-		deck.pull(gD);
-		if(deck.cards.get(deck.cards.size()-1).color().equals(cardFU.color())
-				|| deck.cards.get(deck.cards.size()-1).number() == cardFU.number()
-				|| deck.cards.get(deck.cards.size()-1).number() == 13
-				|| deck.cards.get(deck.cards.size()-1).number() == 14) {
-			return deck.cards.get(deck.cards.size()-1);
+		
+		return null;
+	}
+
+	@Override
+	public boolean drawCard(UnoDeck gD, UnoDeck cardsFU) {
+		UnoCard newCard = gD.pop();
+		
+		if(newCard.canPlace(cardsFU.peek())) {
+			cardsFU.add(newCard);
+			return false;
+		} else {
+			hand.add(newCard);
+			return false;
 		}
-		else {
-			return null;
-		}
+	}
+
+	@Override
+	public void takeCard(UnoCard card) {
+		hand.add(card);
 	}
 }
 

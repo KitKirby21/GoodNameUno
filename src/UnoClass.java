@@ -1,79 +1,74 @@
 import java.util.Collections;
 
 public class UnoClass {
+	
+	public static UnoPlayer[] allPlayers;
+	public static int currentPlayer = 0;	
+	public static int direction = 1;
+	private static UnoDeck generalDeck = new UnoDeck();
+	private static UnoDeck cfu;
+	
 	public static void main(String[] args) {
-		UnoDeck generalDeck = new UnoDeck();
-		Collections.shuffle(generalDeck.cards);
-		UnoPlayer bot1 = new UnoBot();
-		UnoPlayer player1 = new UnoHuman();
-		UnoPlayer[] allplayers = {player1, bot1};
 		
-		if (index >= allplayers.) {index = 0;}
-		UnoDeck botHand = new UnoDeck(7, generalDeck);
-		UnoDeck playerHand = new UnoDeck(7, generalDeck);
-		UnoDeck cfu = new UnoDeck(1, generalDeck);
-		while (botHand.cards.size() > 0 && playerHand.cards.size() > 0) {
-			UnoCard card = (botHand, cfu.cards.get(cfu.cards.size()-1), generalDeck);
-			if(!(card==null)) {
-				cfu.add(card);
-				botHand.remove(card);
-				if(card.number()==UnoCard.SKIP_CARD) {
-					UnoCard carda = bot1(botHand, cfu.cards.get(cfu.cards.size()-1), generalDeck);
-					cfu.add(carda);
-					botHand.remove(carda);
-				}
-				if(card.number()==12) {
-					playerHand.pull(generalDeck);
-					playerHand.pull(generalDeck);
-					UnoCard carda = botTurn(botHand, cfu.cards.get(cfu.cards.size()-1), generalDeck);
-					cfu.add(carda);
-					botHand.remove(carda);
-				}
-				if(card.number()==14) {
-					playerHand.pull(generalDeck);
-					playerHand.pull(generalDeck);
-					playerHand.pull(generalDeck);
-					playerHand.pull(generalDeck);
-					UnoCard carda = botTurn(botHand, cfu.cards.get(cfu.cards.size()-1), generalDeck);
-					cfu.add(carda);
-					botHand.remove(carda);
-				}
+		int nBots = 2;
+		allPlayers = new UnoPlayer[nBots+1];
+		
+		Collections.shuffle(generalDeck.cards);
+		
+		for (int i = 1; i < nBots+1; i++) {
+			allPlayers[i] = new UnoBot(new UnoDeck(7, generalDeck));
+		}
+		allPlayers[0] = new UnoHuman(new UnoDeck(7, generalDeck));
+		
+		cfu = new UnoDeck(1, generalDeck);
+
+		while (true) {
+			
+			UnoCard pickedCard = allPlayers[currentPlayer].pickCard(generalDeck, cfu);
+			if (pickedCard == null) {
+				allPlayers[currentPlayer].drawCard(generalDeck, cfu);
+			} else {
+				cfu.add(pickedCard);
 			}
 			
-			UnoCard card1 = PlayerTurn(playerHand, cfu.cards.get(cfu.cards.size()-1), generalDeck);
-			if(!(card1==null)) {
-
-			cfu.add(card1);
-			playerHand.remove(card1);
-			if(card1.number()==10) {
-				UnoCard cardb = PlayerTurn(playerHand, cfu.cards.get(cfu.cards.size()-1), generalDeck);
-				cfu.add(cardb);
-				playerHand.remove(cardb);
-			}
-			if(card1.number()==12) {
-				botHand.pull(generalDeck);
-				botHand.pull(generalDeck);
-				UnoCard cardb = PlayerTurn(playerHand, cfu.cards.get(cfu.cards.size()-1), generalDeck);
-				cfu.add(cardb);
-				playerHand.remove(cardb);
-			}
-			if(card1.number()==14) {
-				botHand.pull(generalDeck);
-				botHand.pull(generalDeck);
-				botHand.pull(generalDeck);
-				botHand.pull(generalDeck);
-				UnoCard cardb = PlayerTurn(playerHand, cfu.cards.get(cfu.cards.size()-1), generalDeck);
-				cfu.add(cardb);
-				playerHand.remove(cardb);
-			}
 		}
+		
 	}
-		if (botHand.cards.size() == 0) {
-			System.out.println("You lose");
+	
+	private static UnoPlayer nextPlayer() {
+		int i = currentPlayer + direction;
+		if (i >= allPlayers.length) {
+			i = 0;
 		}
-		else {
-			System.out.println("You win");
+		if (i < 0) {
+			i = allPlayers.length-1;
 		}
+		
+		return allPlayers[i];
+	}
+	
+	public static void giveNextPlayerCard(UnoCard card) {
+		
+		nextPlayer().takeCard(card);
+		
+	}
+	
+	public static void doSpecialAction(UnoCard card) {
+		
+		if (card.number() == UnoCard.SKIP_CARD) {
+			currentPlayer += direction;
+		} else if (card.number() == UnoCard.REVERSE_CARD) {
+			direction *= -1;
+		} else if (card.number() == UnoCard.DRAW_2_CARD) {
+			giveNextPlayerCard(generalDeck.pop());
+			giveNextPlayerCard(generalDeck.pop());
+		} else if (card.number() == UnoCard.DRAW_4_CARD) {
+			giveNextPlayerCard(generalDeck.pop());
+			giveNextPlayerCard(generalDeck.pop());
+			giveNextPlayerCard(generalDeck.pop());
+			giveNextPlayerCard(generalDeck.pop());
+		}
+		
 	}
 }
 
