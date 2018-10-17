@@ -13,8 +13,8 @@ public class UnoDeck {
 			}
 			cards.add(new UnoCard(clr, 0));
 			
-			}
 		}
+	}
 
 	public UnoDeck (int num, UnoDeck deck) {
 		for (int  i = 0; i<num; i++) {

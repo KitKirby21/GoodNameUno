@@ -37,63 +37,34 @@ public class UnoCard {
 	
 	public String toString() {
 		
-//		String cardType = "Skip-";
-//		String cardColor = "Blue";
-
+		String cardType;
+		String cardColor;
+		
+		if(number==10) {
+			cardType = "Skip-";
+		} else if(number==11) {
+			cardType = "Reverse-";
+		} else if (number==12) {
+			cardType = "Draw 2-";
+		} else if (number== 13) {
+			cardType = "Color Change-";
+		} else if (number == 14) {
+			cardType = "Draw 4-";
+		} else {
+			cardType = number + "-";
+		}
+		
 		if(this.color().equals(Color.BLUE)) {
-
-			if(number==10)
-			return "Skip-" + "Blue";
-		else if(number==11)
-			return "Reverse-" + "Blue";
-		else if (number==12)
-			return "Draw 2-" + "Blue";
-		else if (number== 13)
-			return "Color Change-" + "Blue";
-		else if (number == 14)
-			return "Draw 4-" + "Blue";
-		else return (number +"-") + "Blue";}
+			cardColor = "Blue";
+		} else if(this.color().equals(Color.RED)) {
+			cardColor = "Red";
+		} else if(this.color().equals(Color.GREEN)) {
+			cardColor = "Green";
+		} else {
+			cardColor = "Yellow";
+		}
 		
-		else if(this.color().equals(Color.RED)) {
+		return cardType+cardColor;
 
-			if(number==10)
-				return "Skip-" + "Red";
-			else if(number==11)
-				return "Reverse-" + "Red";
-			else if (number==12)
-				return "Draw 2-" + "Red";
-			else if (number== 13)
-				return "Color Change-" + "Red";
-			else if (number == 14)
-				return "Draw 4-" + "Red";
-			else return (number +"-") + "Red";}
-		
-		else if(this.color().equals(Color.GREEN)) {
-
-			if(number==10)
-				return "Skip-" + "Green";
-			else if(number==11)
-				return "Reverse-" + "Green";
-			else if (number==12)
-				return "Draw 2-" + "Green";
-			else if (number== 13)
-				return "Color Change-" + "Green";
-			else if (number == 14)
-				return "Draw 4-" + "Green";
-			else return (number +"-") + "Green";}
-		
-		else {
-
-			if(number==10)
-				return "Skip-" + "Yellow";
-			else if(number==11)
-				return "Reverse-" + "Yellow";
-			else if (number==12)
-				return "Draw 2-" + "Yellow";
-			else if (number== 13)
-				return "Color Change-" + "Yellow";
-			else if (number == 14)
-				return "Draw 4-" + "Yellow";
-			else return (number +"-") + "Yellow";}
 	}
 }

@@ -28,6 +28,7 @@ public class UnoClass {
 			if (pickedCard == null) {
 				allPlayers[currentPlayer].drawCard(generalDeck, cfu);
 			} else {
+				doSpecialAction(pickedCard);
 				cfu.add(pickedCard);
 			}
 			
